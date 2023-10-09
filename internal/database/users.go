@@ -9,9 +9,9 @@ import (
 
 type User struct {
 	ID             int       `db:"id"`
-	Created        time.Time `db:"created"`
+	Created        time.Time `db:"date_joined"`
 	Email          string    `db:"email"`
-	HashedPassword string    `db:"hashed_password"`
+	HashedPassword string    `db:"password"`
 }
 
 func (db *DB) InsertUser(email, hashedPassword string) (int, error) {
@@ -19,10 +19,10 @@ func (db *DB) InsertUser(email, hashedPassword string) (int, error) {
 	defer cancel()
 
 	query := `
-		INSERT INTO users (created, email, hashed_password)
-		VALUES ($1, $2, $3)`
+		INSERT INTO common_user (date_joined, username, email, password, is_active, first_name, last_name, is_superuser, is_staff)
+		VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`
 
-	result, err := db.ExecContext(ctx, query, time.Now(), email, hashedPassword)
+	result, err := db.ExecContext(ctx, query, time.Now(), email, email, hashedPassword, true, "", "", false, false)
 	if err != nil {
 		return 0, err
 	}
@@ -41,7 +41,7 @@ func (db *DB) GetUser(id int) (*User, error) {
 
 	var user User
 
-	query := `SELECT * FROM users WHERE id = $1`
+	query := `SELECT id, date_joined, email, password FROM common_user WHERE id = $1`
 
 	err := db.GetContext(ctx, &user, query, id)
 	if errors.Is(err, sql.ErrNoRows) {
@@ -57,7 +57,7 @@ func (db *DB) GetUserByEmail(email string) (*User, error) {
 
 	var user User
 
-	query := `SELECT * FROM users WHERE email = $1`
+	query := `SELECT id, date_joined, email, password FROM common_user WHERE email = $1`
 
 	err := db.GetContext(ctx, &user, query, email)
 	if errors.Is(err, sql.ErrNoRows) {
@@ -71,7 +71,7 @@ func (db *DB) UpdateUserHashedPassword(id int, hashedPassword string) error {
 	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
 	defer cancel()
 
-	query := `UPDATE users SET hashed_password = $1 WHERE id = $2`
+	query := `UPDATE common_user SET password = $1 WHERE id = $2`
 
 	_, err := db.ExecContext(ctx, query, hashedPassword, id)
 	return err

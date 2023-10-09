@@ -29,9 +29,9 @@ func main() {
 }
 
 type config struct {
-	baseURL  string
-	httpPort int
-	cookie   struct {
+	baseURL    string
+	listenAddr string
+	cookie     struct {
 		secretKey string
 	}
 	db struct {
@@ -67,7 +67,7 @@ func run(logger *slog.Logger) error {
 	var cfg config
 
 	flag.StringVar(&cfg.baseURL, "base-url", "http://localhost:4444", "base URL for the application")
-	flag.IntVar(&cfg.httpPort, "http-port", 4444, "port to listen on for HTTP requests")
+	flag.StringVar(&cfg.listenAddr, "http-listen-addr", "127.0.0.1:4444", "addr to listen on for HTTP requests")
 	flag.StringVar(&cfg.cookie.secretKey, "cookie-secret-key", "wz7t47hz37xtl36xiebp2wfehmaoiunt", "secret key for cookie authentication/encryption")
 	flag.StringVar(&cfg.db.dsn, "db-dsn", "db.sqlite", "sqlite3 DSN")
 	flag.BoolVar(&cfg.db.automigrate, "db-automigrate", true, "run migrations on startup")

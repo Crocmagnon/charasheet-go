@@ -1,0 +1,22 @@
+{{define "partial:notes_update"}}
+    <div class="mt-3" id="notes">
+        <form>
+            <h2>
+                Notes
+                <a hx-post="/character/{{.Character.ID}}/notes_change/"
+                hx-target="#notes"
+                hx-swap="innerHTML"
+                class="btn btn-primary btn-sm"
+                >
+                <i class="fa-solid fa-save"></i> Save
+                </a>
+            </h2>
+            <div class="alert alert-info">
+                Le joueur et le MJ peuvent voir et modifier ces notes.
+            </div>
+            <input type='hidden' name='csrf_token' value='{{.CSRFToken}}'>
+            <textarea class="form-control" name="Notes" rows="25">{{ .Character.Notes }}</textarea>
+        </form>
+    </div>
+
+{{end}}

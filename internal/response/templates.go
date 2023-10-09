@@ -19,6 +19,10 @@ func PageWithHeaders(w http.ResponseWriter, status int, data any, headers http.H
 	return NamedTemplateWithHeaders(w, status, data, headers, "base", patterns...)
 }
 
+func Partial(w http.ResponseWriter, status int, data any, headers http.Header, partialPath, partialName string) error {
+	return NamedTemplateWithHeaders(w, status, data, headers, partialName, partialPath)
+}
+
 func NamedTemplate(w http.ResponseWriter, status int, data any, templateName string, patterns ...string) error {
 	return NamedTemplateWithHeaders(w, status, data, nil, templateName, patterns...)
 }

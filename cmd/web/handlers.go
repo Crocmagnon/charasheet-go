@@ -2,6 +2,7 @@ package main
 
 import (
 	"net/http"
+	"strconv"
 	"time"
 
 	"github.com/Crocmagnon/charasheet-go/internal/password"
@@ -370,5 +371,56 @@ func (app *application) passwordResetConfirmation(w http.ResponseWriter, r *http
 	err := response.Page(w, http.StatusOK, data, "pages/password-reset-confirmation.tmpl")
 	if err != nil {
 		app.serverError(w, r, err)
+	}
+}
+
+func (app *application) characterNotesChange(w http.ResponseWriter, r *http.Request) {
+	id, err := strconv.Atoi(httprouter.ParamsFromContext(r.Context()).ByName("id"))
+	if err != nil {
+		app.serverError(w, r, err)
+		return
+	}
+
+	character, err := app.db.GetCharacter(id)
+	if err != nil {
+		app.serverError(w, r, err)
+		return
+	}
+
+	var form struct {
+		Notes string `form:"Notes"`
+	}
+
+	switch r.Method {
+	case http.MethodGet:
+		data := app.newTemplateData(r)
+		data["Character"] = character
+
+		err := response.Partial(w, http.StatusOK, data, nil, "partials/notes_update.tmpl", "partial:notes_update")
+		if err != nil {
+			app.serverError(w, r, err)
+		}
+	case http.MethodPost:
+		err := request.DecodePostForm(r, &form)
+		if err != nil {
+			app.badRequest(w, r, err)
+			return
+		}
+
+		err = app.db.SetCharacterNotes(character.ID, form.Notes)
+		if err != nil {
+			app.serverError(w, r, err)
+			return
+		}
+
+		character.Notes = form.Notes
+
+		data := app.newTemplateData(r)
+		data["Character"] = character
+
+		err = response.Partial(w, http.StatusOK, data, nil, "partials/notes_display.tmpl", "partial:notes_display")
+		if err != nil {
+			app.serverError(w, r, err)
+		}
 	}
 }

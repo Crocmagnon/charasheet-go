@@ -33,6 +33,9 @@ func (app *application) routes() http.Handler {
 
 	mux.Handler("POST", "/logout", appMiddleware.Append(app.requireAuthenticatedUser).ThenFunc(app.logout))
 
+	mux.Handler("GET", "/character/:id/notes_change/", appMiddleware.Append(app.requireAuthenticatedUser).ThenFunc(app.characterNotesChange))
+	mux.Handler("POST", "/character/:id/notes_change/", appMiddleware.Append(app.requireAuthenticatedUser).ThenFunc(app.characterNotesChange))
+
 	defaultMiddleware := alice.New(app.recoverPanic, app.securityHeaders)
 	return defaultMiddleware.Then(mux)
 }

@@ -52,16 +52,17 @@ build:
 ## run: run the cmd/web application
 .PHONY: run
 run: build
-	/tmp/bin/web
+	/tmp/bin/web -db-dsn="../charasheet/db/db.sqlite3"
 
 ## run/live: run the application with reloading on file changes
 .PHONY: run/live
 run/live:
-	go run github.com/cosmtrek/air@v1.43.0 \
+	go run github.com/cosmtrek/air@v1.45.0 \
 		--build.cmd "make build" --build.bin "/tmp/bin/web" --build.delay "100" \
 		--build.exclude_dir "" \
 		--build.include_ext "go, tpl, tmpl, html, css, scss, js, ts, sql, jpeg, jpg, gif, png, bmp, svg, webp, ico" \
-		--misc.clean_on_exit "true"
+		--misc.clean_on_exit "true" \
+		-- -db-dsn="../charasheet/db/db.sqlite3"
 
 
 # ==================================================================================== #

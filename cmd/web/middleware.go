@@ -1,8 +1,10 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"net/http"
+	"strconv"
 
 	"github.com/justinas/nosurf"
 )
@@ -54,6 +56,16 @@ func (app *application) authenticate(next http.Handler) http.Handler {
 		}
 
 		userID, ok := session.Values["userID"].(int)
+		if !ok {
+			userID, err = app.getUserIDFromDjangoSession(r)
+			if err != nil {
+				app.serverError(w, r, err)
+				return
+			}
+
+			ok = userID > 0
+		}
+
 		if ok {
 			user, err := app.db.GetUser(userID)
 			if err != nil {
@@ -68,6 +80,34 @@ func (app *application) authenticate(next http.Handler) http.Handler {
 
 		next.ServeHTTP(w, r)
 	})
+}
+
+func (app *application) getUserIDFromDjangoSession(r *http.Request) (int, error) {
+	sessionIDCookie, err := r.Cookie("sessionid")
+
+	switch {
+	case errors.Is(err, http.ErrNoCookie):
+		return 0, nil
+	case err != nil:
+		return 0, fmt.Errorf("getting cookie 'sessionid': %w", err)
+	}
+
+	session, err := app.db.GetSession(sessionIDCookie.Value)
+	if err != nil {
+		return 0, fmt.Errorf("getting session from db: %w", err)
+	}
+
+	sessionData, err := session.Decode()
+	if err != nil {
+		return 0, fmt.Errorf("decoding session: %w", err)
+	}
+
+	userID, err := strconv.Atoi(sessionData.AuthUserId)
+	if err != nil {
+		return 0, fmt.Errorf("converting userID to int: %w", err)
+	}
+
+	return userID, nil
 }
 
 func (app *application) requireAuthenticatedUser(next http.Handler) http.Handler {
