@@ -3,6 +3,7 @@ package main
 import (
 	"errors"
 	"fmt"
+	"log/slog"
 	"net/http"
 	"strconv"
 
@@ -151,4 +152,25 @@ func (app *application) requireAnonymousUser(next http.Handler) http.Handler {
 
 		next.ServeHTTP(w, r)
 	})
+}
+
+func (app *application) logging(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		recorder := &StatusRecorder{
+			ResponseWriter: w,
+			Status:         http.StatusOK,
+		}
+		next.ServeHTTP(recorder, r)
+		app.logger.Info("processed request", slog.Group("http", "status", recorder.Status, "method", r.Method, "path", r.URL.Path))
+	})
+}
+
+type StatusRecorder struct {
+	http.ResponseWriter
+	Status int
+}
+
+func (r *StatusRecorder) WriteHeader(status int) {
+	r.Status = status
+	r.ResponseWriter.WriteHeader(status)
 }
