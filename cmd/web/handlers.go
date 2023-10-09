@@ -1,6 +1,10 @@
 package main
 
 import (
+	"github.com/gomarkdown/markdown"
+	"github.com/gomarkdown/markdown/html"
+	"github.com/gomarkdown/markdown/parser"
+	"html/template"
 	"net/http"
 	"strconv"
 	"time"
@@ -413,14 +417,26 @@ func (app *application) characterNotesChange(w http.ResponseWriter, r *http.Requ
 			return
 		}
 
-		character.Notes = form.Notes
-
 		data := app.newTemplateData(r)
 		data["Character"] = character
+		data["HTMLNotes"] = mdToHTML(form.Notes)
 
 		err = response.Partial(w, http.StatusOK, data, nil, "partials/notes_display.tmpl", "partial:notes_display")
 		if err != nil {
 			app.serverError(w, r, err)
 		}
 	}
+}
+
+func mdToHTML(md string) template.HTML {
+	// create markdown parser with extensions
+	extensions := parser.CommonExtensions | parser.AutoHeadingIDs | parser.NoEmptyLineBeforeBlock | parser.HardLineBreak
+	p := parser.NewWithExtensions(extensions)
+
+	// create HTML renderer with extensions
+	htmlFlags := html.CommonFlags | html.HrefTargetBlank
+	opts := html.RendererOptions{Flags: htmlFlags}
+	renderer := html.NewRenderer(opts)
+
+	return template.HTML(markdown.ToHTML([]byte(md), p, renderer))
 }
