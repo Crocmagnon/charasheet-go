@@ -7,6 +7,7 @@ RUN go mod download
 COPY assets ./assets
 COPY cmd ./cmd
 COPY internal ./internal
+COPY .git ./.git
 COPY Makefile ./
 RUN make build
 

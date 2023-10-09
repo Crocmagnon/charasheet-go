@@ -40,11 +40,11 @@ jobs:
           TEMP=$(mktemp)
           echo "${{ secrets.DEPLOY_KEY }}" > $TEMP
           ssh -o StrictHostKeyChecking=no -i $TEMP -p ${{ secrets.DEPLOY_PORT }} ${{ secrets.DEPLOY_USERNAME }}@${{ secrets.DEPLOY_HOST }} /mnt/data/charasheet/update
-#      - name: Check
-#        uses: nick-fields/retry@v2
-#        with:
-#          timeout_seconds: 30
-#          max_attempts: 5
-#          retry_wait_seconds: 2
-#          warning_on_retry: false
-#          command: curl -sSL --fail -m 10 https://charasheet-go.augendre.info | grep ${GITHUB_SHA::7} > /dev/null
+      - name: Check
+        uses: nick-fields/retry@v2
+        with:
+          timeout_seconds: 30
+          max_attempts: 5
+          retry_wait_seconds: 2
+          warning_on_retry: false
+          command: curl -sSL --fail -m 10 https://charasheet-go.augendre.info/version | grep ${GITHUB_SHA::7} > /dev/null
