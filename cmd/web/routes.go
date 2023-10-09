@@ -16,6 +16,8 @@ func (app *application) routes() http.Handler {
 	fileServer := http.FileServer(http.FS(assets.EmbeddedFiles))
 	mux.Handler("GET", "/static/*filepath", fileServer)
 
+	mux.Handler("GET", "/version", app.preventCSRF(http.HandlerFunc(app.version)))
+
 	appMiddleware := alice.New(app.preventCSRF, app.authenticate)
 
 	mux.Handler("GET", "/", appMiddleware.ThenFunc(app.home))

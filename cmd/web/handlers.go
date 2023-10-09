@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/Crocmagnon/charasheet-go/internal/version"
 	"github.com/gomarkdown/markdown"
 	"github.com/gomarkdown/markdown/html"
 	"github.com/gomarkdown/markdown/parser"
@@ -22,6 +23,15 @@ func (app *application) home(w http.ResponseWriter, r *http.Request) {
 	data := app.newTemplateData(r)
 
 	err := response.Page(w, http.StatusOK, data, "pages/home.tmpl")
+	if err != nil {
+		app.serverError(w, r, err)
+	}
+}
+
+func (app *application) version(w http.ResponseWriter, r *http.Request) {
+	err := response.JSON(w, http.StatusOK, map[string]string{
+		"version": version.Get(),
+	})
 	if err != nil {
 		app.serverError(w, r, err)
 	}
