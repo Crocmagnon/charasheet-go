@@ -24,7 +24,7 @@ issues:
   fix: true
   max-issues-per-linter: 0
   max-same-issues: 0
-  new-from-rev: 2c181aa762eb5013d6785b67a5a2e21b616f942d
+  new-from-rev: 1462742a06cb4412244accfb2853e5560a11bf20
   exclude-rules:
     - path: cmd/web/(main|server)\.go
       linters:
