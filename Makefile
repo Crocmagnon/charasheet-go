@@ -19,13 +19,20 @@ tidy:
 	go fmt ./...
 	go mod tidy -v
 
-## audit: run quality control checks
-.PHONY: audit
-audit:
+## lint: run linter
+.PHONY: lint
+lint:
+	@echo 'Tidying and verifying module dependencies...'
+	go mod tidy
 	go mod verify
+	@echo 'Formatting code...'
+	go fmt ./...
+	@echo 'Vetting code...'
 	go vet ./...
 	go run honnef.co/go/tools/cmd/staticcheck@latest -checks=all,-ST1000,-U1000 ./...
 	go run golang.org/x/vuln/cmd/govulncheck@latest ./...
+	golangci-lint run
+	@echo 'Running tests...'
 	go test -race -buildvcs -vet=off ./...
 
 

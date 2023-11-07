@@ -1,10 +1,6 @@
 package main
 
 import (
-	"github.com/Crocmagnon/charasheet-go/internal/version"
-	"github.com/gomarkdown/markdown"
-	"github.com/gomarkdown/markdown/html"
-	"github.com/gomarkdown/markdown/parser"
 	"html/template"
 	"net/http"
 	"strconv"
@@ -15,7 +11,10 @@ import (
 	"github.com/Crocmagnon/charasheet-go/internal/response"
 	"github.com/Crocmagnon/charasheet-go/internal/token"
 	"github.com/Crocmagnon/charasheet-go/internal/validator"
-
+	"github.com/Crocmagnon/charasheet-go/internal/version"
+	"github.com/gomarkdown/markdown"
+	"github.com/gomarkdown/markdown/html"
+	"github.com/gomarkdown/markdown/parser"
 	"github.com/julienschmidt/httprouter"
 )
 

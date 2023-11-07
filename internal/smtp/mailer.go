@@ -2,15 +2,13 @@ package smtp
 
 import (
 	"bytes"
+	htmlTemplate "html/template"
+	textTemplate "text/template"
 	"time"
 
 	"github.com/Crocmagnon/charasheet-go/assets"
 	"github.com/Crocmagnon/charasheet-go/internal/funcs"
-
 	"github.com/go-mail/mail/v2"
-
-	htmlTemplate "html/template"
-	textTemplate "text/template"
 )
 
 type Mailer struct {

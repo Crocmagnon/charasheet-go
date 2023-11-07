@@ -12,7 +12,6 @@ import (
 	"github.com/Crocmagnon/charasheet-go/internal/database"
 	"github.com/Crocmagnon/charasheet-go/internal/smtp"
 	"github.com/Crocmagnon/charasheet-go/internal/version"
-
 	"github.com/gorilla/sessions"
 	"github.com/lmittmann/tint"
 )

@@ -4,7 +4,6 @@ import (
 	"net/http"
 
 	"github.com/Crocmagnon/charasheet-go/assets"
-
 	"github.com/julienschmidt/httprouter"
 	"github.com/justinas/alice"
 )
@@ -23,11 +22,8 @@ func (app *application) routes() http.Handler {
 	appMiddleware = appMiddleware.Append(app.authenticate)
 	mux.Handler("GET", "/", appMiddleware.ThenFunc(app.home))
 
-	//anonymous := appMiddleware.Append(app.requireAnonymousUser)
-	//mux.Handler("GET", "/signup", anonymous.ThenFunc(app.signup))
-	//mux.Handler("POST", "/signup", anonymous.ThenFunc(app.signup))
-	//mux.Handler("GET", "/login", anonymous.ThenFunc(app.login))
-	//mux.Handler("POST", "/login", anonymous.ThenFunc(app.login))
+	// mux.Handler("GET", "/login", anonymous.ThenFunc(app.login))
+
 	//mux.Handler("GET", "/forgotten-password", anonymous.ThenFunc(app.forgottenPassword))
 	//mux.Handler("POST", "/forgotten-password", anonymous.ThenFunc(app.forgottenPassword))
 	//mux.Handler("GET", "/forgotten-password-confirmation", anonymous.ThenFunc(app.forgottenPasswordConfirmation))

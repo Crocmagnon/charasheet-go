@@ -1,6 +1,6 @@
 module github.com/Crocmagnon/charasheet-go
 
-go 1.21.2
+go 1.21.3
 
 require (
 	github.com/go-mail/mail/v2 v2.3.0

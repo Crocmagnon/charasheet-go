@@ -25,7 +25,6 @@ func (app *application) recoverPanic(next http.Handler) http.Handler {
 
 func (app *application) securityHeaders(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-
 		w.Header().Set("Referrer-Policy", "origin-when-cross-origin")
 		w.Header().Set("X-Content-Type-Options", "nosniff")
 		w.Header().Set("X-Frame-Options", "deny")
@@ -103,7 +102,7 @@ func (app *application) getUserIDFromDjangoSession(r *http.Request) (int, error)
 		return 0, fmt.Errorf("decoding session: %w", err)
 	}
 
-	userID, err := strconv.Atoi(sessionData.AuthUserId)
+	userID, err := strconv.Atoi(sessionData.AuthUserID)
 	if err != nil {
 		return 0, fmt.Errorf("converting userID to int: %w", err)
 	}
@@ -147,7 +146,6 @@ func (app *application) requireAnonymousUser(next http.Handler) http.Handler {
 		if authenticatedUser != nil {
 			http.Redirect(w, r, "/", http.StatusSeeOther)
 			return
-
 		}
 
 		next.ServeHTTP(w, r)

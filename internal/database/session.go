@@ -61,7 +61,7 @@ func (s *DjangoSession) Decode() (*DjangoSessionData, error) {
 
 type DjangoSessionData struct {
 	Preview         bool   `json:"preview"`
-	AuthUserId      string `json:"_auth_user_id"`
+	AuthUserID      string `json:"_auth_user_id"`
 	AuthUserBackend string `json:"_auth_user_backend"`
 	AuthUserHash    string `json:"_auth_user_hash"`
 }
