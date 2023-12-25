@@ -5,7 +5,7 @@ go 1.21.3
 require (
 	github.com/go-mail/mail/v2 v2.3.0
 	github.com/go-playground/form/v4 v4.2.1
-	github.com/golang-migrate/migrate/v4 v4.16.2
+	github.com/golang-migrate/migrate/v4 v4.17.0
 	github.com/gomarkdown/markdown v0.0.0-20230922112808-5421fefb8386
 	github.com/gorilla/sessions v1.2.2
 	github.com/jmoiron/sqlx v1.3.5
@@ -14,7 +14,7 @@ require (
 	github.com/justinas/nosurf v1.1.1
 	github.com/lmittmann/tint v1.0.3
 	github.com/mattn/go-sqlite3 v1.14.19
-	golang.org/x/crypto v0.16.0
+	golang.org/x/crypto v0.17.0
 	golang.org/x/exp v0.0.0-20231006140011-7918f672742d
 	golang.org/x/text v0.14.0
 )
