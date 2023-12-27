@@ -5,7 +5,7 @@ go 1.21.3
 require (
 	github.com/go-mail/mail/v2 v2.3.0
 	github.com/go-playground/form/v4 v4.2.1
-	github.com/golang-migrate/migrate/v4 v4.16.2
+	github.com/golang-migrate/migrate/v4 v4.17.0
 	github.com/gomarkdown/markdown v0.0.0-20230922112808-5421fefb8386
 	github.com/gorilla/sessions v1.2.2
 	github.com/jmoiron/sqlx v1.3.5
