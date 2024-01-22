@@ -12,7 +12,7 @@ require (
 	github.com/julienschmidt/httprouter v1.3.0
 	github.com/justinas/alice v1.2.0
 	github.com/justinas/nosurf v1.1.1
-	github.com/lmittmann/tint v1.0.3
+	github.com/lmittmann/tint v1.0.4
 	github.com/mattn/go-sqlite3 v1.14.19
 	golang.org/x/crypto v0.18.0
 	golang.org/x/exp v0.0.0-20231006140011-7918f672742d
